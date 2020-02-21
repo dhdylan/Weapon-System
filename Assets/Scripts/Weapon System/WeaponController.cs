@@ -7,10 +7,13 @@ public class WeaponController : MonoBehaviour, IWeapon
     Rigidbody playerRigidbody;
 
     [SerializeField]    public Weapon equippedWeapon;
-    [SerializeField]    private MeshFilter weaponMeshFilterComponent;
-    [SerializeField]    private GameObject projectileGameObject; // creates a reference to a projectile prefab just for ease of use/tweaking
+                        private GameObject equippedWeaponGameObject;
+    [SerializeField]    private GameObject weaponGameObjectTemplate;
+                        private WeaponMonoBehaviour weaponMonoBehaviour;
+    [SerializeField]    private GameObject projectileGameObjectTemplate;
                         private ProjectileMonoBehaviour projectileMonoBehaviour;
     [SerializeField]    private Transform projectileEmitter;
+    [SerializeField]    private Transform weaponDropper;
     [SerializeField]    private Animator weaponAnimator;
 
     private float timeToFire;
@@ -19,6 +22,9 @@ public class WeaponController : MonoBehaviour, IWeapon
 
     void Start()
     {
+        equippedWeaponGameObject = GameObject.Find("EquippedWeapon");
+        weaponMonoBehaviour = weaponGameObjectTemplate.GetComponent<WeaponMonoBehaviour>();
+        projectileMonoBehaviour = projectileGameObjectTemplate.GetComponent<ProjectileMonoBehaviour>();
         playerRigidbody = GetComponent<Rigidbody>();
         isReloading = false;
         timeToFire = 0;
@@ -27,10 +33,20 @@ public class WeaponController : MonoBehaviour, IWeapon
     public void SetWeapon(Weapon weapon)
     {
         equippedWeapon = weapon;
-        weaponMeshFilterComponent.mesh = weapon.weaponMesh;
-        ProjectileMonoBehaviour projectileMonoBehaviour = projectileGameObject.GetComponent<ProjectileMonoBehaviour>();
+        equippedWeaponGameObject.GetComponent<MeshFilter>().mesh = weapon.mesh;
+        equippedWeaponGameObject.GetComponent<MeshRenderer>().material = weapon.material;
         projectileMonoBehaviour.projectile = equippedWeapon.projectile;
         currentAmmo = equippedWeapon.magSize;
+    }
+
+    public void RemoveWeapon()
+    {
+        weaponMonoBehaviour.weapon = equippedWeapon;
+        equippedWeapon = null;
+        equippedWeaponGameObject.GetComponent<MeshFilter>().mesh = null;
+        equippedWeaponGameObject.GetComponent<MeshRenderer>().material = null;
+        currentAmmo = 0;
+        Instantiate(weaponGameObjectTemplate, weaponDropper.position, weaponDropper.rotation);
     }
 
     public void Zoom()
@@ -48,10 +64,10 @@ public class WeaponController : MonoBehaviour, IWeapon
         if (currentAmmo > 0 && Time.time >= timeToFire)             // <---o   this is how fire rate works
         {                                                           //     |
             timeToFire = Time.time + 1f / equippedWeapon.fireRate;  // <---o
-            Instantiate(projectileGameObject, projectileEmitter.position, projectileEmitter.rotation);  // insantiate a new projectileGameObject which is based on the currents weapon's projectile object
+            Instantiate(projectileGameObjectTemplate, projectileEmitter.position, projectileEmitter.rotation);  // insantiate a new projectileGameObject which is based on the currents weapon's projectile object
             currentAmmo = currentAmmo - 1;
 
-            if (currentAmmo <= 0)   // reloading
+            if (currentAmmo <= 0 && equippedWeapon != null)   // reloading
             {
                 StartCoroutine(Reload());
                 return;

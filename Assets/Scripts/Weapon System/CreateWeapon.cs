@@ -5,7 +5,7 @@ using UnityEngine;
 public class CreateWeapon : MonoBehaviour
 {
     // reference to the weapon controller script
-    private WeaponController weaponController;
+    [SerializeField] private WeaponController weaponController;
 
     //
 
@@ -24,6 +24,7 @@ public class CreateWeapon : MonoBehaviour
     //
 
     [SerializeField] private Mesh weaponMesh;
+    [SerializeField] private Material weaponMaterial;
     [SerializeField] private FiringMode firingMode;
     [SerializeField] private float fireRate;
     [SerializeField] private int magSize;
@@ -33,7 +34,10 @@ public class CreateWeapon : MonoBehaviour
     private void Start()
     {
         weaponController = GetComponent<WeaponController>();
-        SetWeapon();
+        if(weaponController == null)
+        {
+            Debug.Log("crap");
+        }
     }
 
     // 
@@ -43,7 +47,7 @@ public class CreateWeapon : MonoBehaviour
         Projectile projectile = new Projectile(projectileMesh, projectileMaterial, projectileDamage, projectileStartingVelocityFloat, projectileIsAoe, aoeGameObject, projectileIsExplosive, projectileExplosionForce, projectileAoeRadius, projectileAoeDamage);
         
         // creates a new weapon object using the parameters set in the inspector. uses the above projectile object
-        Weapon weapon = new Weapon(weaponMesh, zoomModifier, magSize, projectile, reloadTime, firingMode, fireRate);
+        Weapon weapon = new Weapon(weaponMesh, weaponMaterial, zoomModifier, magSize, projectile, reloadTime, firingMode, fireRate);
         
         weaponController.SetWeapon(weapon);
     }

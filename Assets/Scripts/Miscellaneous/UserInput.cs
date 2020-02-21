@@ -6,6 +6,7 @@ public class UserInput : MonoBehaviour
 {
     private MovementController movementController;
     private WeaponController weaponController;
+    private Inventory inventory;
 
     private void Start()
     {
@@ -13,6 +14,7 @@ public class UserInput : MonoBehaviour
         Cursor.visible = false;
         movementController = GetComponent<MovementController>();
         weaponController = GetComponent<WeaponController>();
+        inventory = GetComponent<Inventory>();
     }
 
     void FixedUpdate()
@@ -30,6 +32,11 @@ public class UserInput : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKey(KeyCode.E))
+        {
+            inventory.TryEquip();
+        }
+
         if (weaponController.equippedWeapon.firingMode == FiringMode.single)
         {
             if (Input.GetButtonDown("Fire1"))

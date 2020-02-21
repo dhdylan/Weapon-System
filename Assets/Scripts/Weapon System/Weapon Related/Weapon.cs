@@ -3,7 +3,8 @@
 [CreateAssetMenu(fileName = "Weapon", menuName = "Weapon", order = 51)]
 public class Weapon : ScriptableObject
 {
-    public Mesh weaponMesh;
+    public Mesh mesh;
+    public Material material;
     public float zoomModifier;
     public int magSize;
     public Projectile projectile;
@@ -11,9 +12,10 @@ public class Weapon : ScriptableObject
     public FiringMode firingMode;
     public float fireRate;
 
-    public Weapon(Mesh weaponMesh, float zoomModifier, int magSize, Projectile projectile, float reloadTime, FiringMode firingMode, float fireRate)
+    public Weapon(Mesh mesh, Material material, float zoomModifier, int magSize, Projectile projectile, float reloadTime, FiringMode firingMode, float fireRate)
     {
-        this.weaponMesh = weaponMesh;
+        this.mesh = mesh;
+        this.material = material;
         this.zoomModifier = zoomModifier;
         this.magSize = magSize;
         this.projectile = projectile;
