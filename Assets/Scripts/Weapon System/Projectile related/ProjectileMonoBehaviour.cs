@@ -18,48 +18,49 @@ public class ProjectileMonoBehaviour : MonoBehaviour
         meshRenderer = GetComponent<MeshRenderer>();
         meshCollider = GetComponent<MeshCollider>();
         projectileRB = GetComponent<Rigidbody>();
-        meshFilter.mesh = projectile.projectileMesh;
-        if (projectile.projectileMaterial != null)
+        meshFilter.mesh = projectile.mesh;
+        if (projectile.material != null)
         {
-            meshRenderer.material = projectile.projectileMaterial;
+            meshRenderer.material = projectile.material;
         }
-        meshCollider.sharedMesh = projectile.projectileMesh;
-        projectileRB.velocity = projectile.startingVelocityTransform;
+        meshCollider.sharedMesh = projectile.mesh;
+        projectileRB.velocity = projectile.startingVelocityFloat * transform.forward;
     }
+
+    //this entire callback handles bullet collision
     private void OnTriggerEnter(Collider collision)
     {
-        // projectile on-hit damage handling
-        Debug.Log("hit" + collision.gameObject.name);
-        CharacterStats collidedPlayerStats = collision.gameObject.GetComponent<CharacterStats>();
-        if (collidedPlayerStats != null)
+        CharacterStats collidedPlayerStats = collision.gameObject.GetComponent<CharacterStats>();   // checks to see if there is a "CharacterStats" object attached to the collided object
+        if (collidedPlayerStats != null)                                                            // <---------|
         {
-            collidedPlayerStats.TakeDamage(projectile.damage);
+            collidedPlayerStats.TakeDamage(projectile.damage);                                      // if so, apply on-hit damage
         }
 
-        // AoE handling
-        if (projectile.isAoE)
+        // aoe handling
+        if (projectile.isAoe)
         {
-            Instantiate(projectile.AoEObject, this.transform.position, this.transform.rotation);
-            Collider[] hitColliders = Physics.OverlapSphere(this.transform.position, projectile.AoERadius);
+            Instantiate(projectile.aoeGameObject, this.transform.position, this.transform.rotation);
+            Collider[] hitColliders = Physics.OverlapSphere(this.transform.position, projectile.aoeRadius);
             if (hitColliders != null){
                 for (int i=0; i<hitColliders.Length; i++)
                 {
                     CharacterStats collidedPlayerStatsAoE = hitColliders[i].gameObject.GetComponent<CharacterStats>();
                     if (collidedPlayerStatsAoE != null)
                     {
-                        collidedPlayerStatsAoE.TakeDamage(projectile.AoeDamage);
+                        collidedPlayerStatsAoE.TakeDamage(projectile.aoeDamage);
                     }
                     if (projectile.isExplosive)
                     {
                         Rigidbody rb = hitColliders[i].gameObject.GetComponent<Rigidbody>();
                         if (rb != null)
                         {
-                            rb.AddExplosionForce(projectile.explosionForce, this.transform.position, projectile.AoERadius * 2, 3.0F);
+                            rb.AddExplosionForce(projectile.explosionForce, this.transform.position, projectile.aoeRadius * 2, 3.0F);
                         }
                     }
                 }
             }
         }
+
         Destroy(this.gameObject);
     }
 }

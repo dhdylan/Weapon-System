@@ -9,6 +9,7 @@ public class CharacterStats: MonoBehaviour
 
     public void TakeDamage(int damage)
     {
+        Debug.Log(CurrentHealth);
         if(CurrentArmor > 0)
         {
             CurrentArmor = CurrentArmor - damage;
@@ -21,6 +22,7 @@ public class CharacterStats: MonoBehaviour
         }
         else
         {
+            Debug.Log(damage + " damage taken");
             CurrentHealth = CurrentHealth - damage;
         }
 

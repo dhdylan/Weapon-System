@@ -526,8 +526,8 @@ GameObject:
   - component: {fileID: 2658945468300269029}
   - component: {fileID: 2658945468300269028}
   - component: {fileID: 2658945468300269027}
-  - component: {fileID: 1638029316}
   - component: {fileID: 8368901800176704987}
+  - component: {fileID: 1638029316}
   - component: {fileID: 2658945468300269026}
   - component: {fileID: 2658945468300269032}
   - component: {fileID: 6185319541776307914}
@@ -630,6 +630,36 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 1
+--- !u!114 &8368901800176704987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2658945468300269025}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e82b1e6377f02614385fe0c891a0f04f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectileMesh: {fileID: 2534964839176971238, guid: 8595dfb8371d5d047ac5e0e418531e70,
+    type: 3}
+  projectileMaterial: {fileID: 0}
+  projectileDamage: 12
+  projectileStartingVelocityFloat: 80
+  projectileIsAoe: 0
+  aoeGameObject: {fileID: 0}
+  projectileIsExplosive: 0
+  projectileExplosionForce: 0
+  projectileAoeRadius: 0
+  projectileAoeDamage: 0
+  weaponMesh: {fileID: -5495902117074765545, guid: 5302827addf49bc4a9656f9add78f4b3,
+    type: 3}
+  firingMode: 1
+  fireRate: 6
+  magSize: 50
+  reloadTime: 3
+  zoomModifier: 1
 --- !u!114 &1638029316
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -648,31 +678,6 @@ MonoBehaviour:
     type: 3}
   projectileEmitter: {fileID: 4405687798076182769}
   weaponAnimator: {fileID: 6185319541776307914}
---- !u!114 &8368901800176704987
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2658945468300269025}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e82b1e6377f02614385fe0c891a0f04f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponMesh: {fileID: -5495902117074765545, guid: 5302827addf49bc4a9656f9add78f4b3,
-    type: 3}
-  firingMode: 1
-  fireRate: 6
-  magSize: 50
-  reloadTime: 3
-  zoomModifier: 1
-  projectileMesh: {fileID: 2534964839176971238, guid: 8595dfb8371d5d047ac5e0e418531e70,
-    type: 3}
-  projectileDamage: 12
-  projectileStartingVelocityFloat: 80
-  projectileIsAoe: 0
-  projectileIsExplosive: 0
 --- !u!114 &2658945468300269026
 MonoBehaviour:
   m_ObjectHideFlags: 0

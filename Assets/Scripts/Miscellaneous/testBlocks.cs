@@ -11,7 +11,7 @@ public class testBlocks : MonoBehaviour
     void Start()
     {
         cubeCharacterStats = GetComponent<CharacterStats>();
-        cubeCharacterStats.CurrentHealth = 100;
+        cubeCharacterStats.CurrentHealth = 101;
         textMeshProScript = GetComponentInChildren<TextMeshPro>();
         textMeshProScript.text = cubeCharacterStats.CurrentHealth.ToString();
     }

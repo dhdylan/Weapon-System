@@ -4,26 +4,19 @@ using UnityEngine;
 
 public class WeaponController : MonoBehaviour, IWeapon
 {
-    [SerializeField]
-    public Weapon equippedWeapon;
-    [SerializeField]
-    private MeshFilter weaponMeshFilterComponent;
-
-    [SerializeField]
-    private GameObject projectileTemplate;
-    private ProjectileMonoBehaviour projectileMonoBehaviour;
-    
-    [SerializeField]
-    private Transform projectileEmitter;
-    [SerializeField]
-    private Animator weaponAnimator;
-
     Rigidbody playerRigidbody;
+
+    [SerializeField]    public Weapon equippedWeapon;
+    [SerializeField]    private MeshFilter weaponMeshFilterComponent;
+    [SerializeField]    private GameObject projectileGameObject; // creates a reference to a projectile prefab just for ease of use/tweaking
+                        private ProjectileMonoBehaviour projectileMonoBehaviour;
+    [SerializeField]    private Transform projectileEmitter;
+    [SerializeField]    private Animator weaponAnimator;
 
     private float timeToFire;
     private int currentAmmo;
-    private float reloadTime;
     private bool isReloading;
+
     void Start()
     {
         playerRigidbody = GetComponent<Rigidbody>();
@@ -33,35 +26,32 @@ public class WeaponController : MonoBehaviour, IWeapon
     
     public void SetWeapon(Weapon weapon)
     {
-        Debug.Log("wepon controller set weapon called");
         equippedWeapon = weapon;
         weaponMeshFilterComponent.mesh = weapon.weaponMesh;
+        ProjectileMonoBehaviour projectileMonoBehaviour = projectileGameObject.GetComponent<ProjectileMonoBehaviour>();
+        projectileMonoBehaviour.projectile = equippedWeapon.projectile;
         currentAmmo = equippedWeapon.magSize;
     }
 
-    public void zoom()
+    public void Zoom()
     {
         weaponAnimator.SetBool("isZoomed", true);
     }
 
-    public void unzoom()
+    public void Unzoom()
     {
         weaponAnimator.SetBool("isZoomed", false);
     }
 
     public void Shoot()
     {
-        if (currentAmmo > 0 && Time.time >= timeToFire)
-        {
-            equippedWeapon.projectile.startingVelocityTransform = playerRigidbody.velocity + (equippedWeapon.projectile.startingVelocityFloat * GameObject.Find("Main Camera").transform.forward);
-
-            timeToFire = Time.time + 1f / equippedWeapon.fireRate;
-            ProjectileMonoBehaviour projectileMonoBehaviour = projectileTemplate.GetComponent<ProjectileMonoBehaviour>();
-            projectileMonoBehaviour.projectile = equippedWeapon.projectile;
-            Instantiate(projectileTemplate, projectileEmitter.position, projectileEmitter.rotation);
+        if (currentAmmo > 0 && Time.time >= timeToFire)             // <---o   this is how fire rate works
+        {                                                           //     |
+            timeToFire = Time.time + 1f / equippedWeapon.fireRate;  // <---o
+            Instantiate(projectileGameObject, projectileEmitter.position, projectileEmitter.rotation);  // insantiate a new projectileGameObject which is based on the currents weapon's projectile object
             currentAmmo = currentAmmo - 1;
 
-            if (currentAmmo <= 0)
+            if (currentAmmo <= 0)   // reloading
             {
                 StartCoroutine(Reload());
                 return;

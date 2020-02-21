@@ -47,12 +47,12 @@ public class UserInput : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
-            weaponController.zoom();
+            weaponController.Zoom();
         }
 
         if (Input.GetKeyUp(KeyCode.Mouse1))
         {
-            weaponController.unzoom();
+            weaponController.Unzoom();
         }
     }
 }
